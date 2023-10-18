@@ -75,15 +75,16 @@ def calcula_pasos(bp: dict[Vertex, Vertex], distances: dict[(Vertex, Vertex), in
         steps = 1
     elif bp[destino] == bp[origen]:
         steps = 2
-    else:
+    elif (bp[destino], origen) in distances.keys():
         steps = distances[(bp[destino], origen)] + 1
+    else:
+        steps = calcula_pasos(bp, distances, bp[destino], origen) + 1
     return steps
 
 def process(ug: UndirectedGraph[Vertex], rows: int, cols: int) -> int:
     suma_steps = 0
     distances: dict[(Vertex, Vertex), int] = dict()
     bp, camino = bf_search(ug, (0, 0))
-
     ultimo_vertice = None
 
     for u, v in camino:
